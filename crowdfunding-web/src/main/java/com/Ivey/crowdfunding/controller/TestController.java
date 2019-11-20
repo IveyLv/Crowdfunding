@@ -1,4 +1,4 @@
-package com.Ivey.crowdfunding.test.controller;
+package com.Ivey.crowdfunding.controller;
 
 import com.Ivey.crowdfunding.bean.User;
 import com.Ivey.crowdfunding.service.UserService;
