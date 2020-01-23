@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="GB18030">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -32,19 +32,19 @@
 </nav>
 
 <div class="container">
-
-    <form class="form-signin" role="form">
+    <h1>${param.errorMsg}</h1>
+    <form id="loginForm" action="doLogin" method="post" class="form-signin" role="form">
         <h2 class="form-signin-heading"><i class="glyphicon glyphicon-user"></i> 用户登录</h2>
         <div class="form-group has-success has-feedback">
-            <input type="text" class="form-control" id="username" placeholder="请输入登录账号" autofocus>
+            <input type="text" class="form-control" id="loginName" name="loginName" placeholder="请输入登录账号" autofocus>
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div class="form-group has-success has-feedback">
-            <input type="text" class="form-control" id="password" placeholder="请输入登录密码" style="margin-top:10px;">
+            <input type="password" class="form-control" id="password" name="password" placeholder="请输入登录密码" style="margin-top:10px;">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <div class="form-group has-success has-feedback">
-            <select class="form-control" >
+            <select class="form-control">
                 <option value="member">会员</option>
                 <option value="user">管理</option>
             </select>
@@ -61,7 +61,7 @@
                 <a href="reg.html">我要注册</a>
             </label>
         </div>
-        <a class="btn btn-lg btn-success btn-block" onclick="dologin()" > 登录</a>
+        <a class="btn btn-lg btn-success btn-block" onclick="dologin()"> 登录</a>
     </form>
 </div>
 <script src="${pageContext.request.contextPath}/jquery/jquery-2.1.1.min.js"></script>
@@ -69,12 +69,49 @@
 <script src="${pageContext.request.contextPath}/layer/layer.js"></script>
 <script>
     function dologin() {
-        var type = $(":selected").val();
-        if ( type == "user" ) {
-            window.location.href = "main.html";
-        } else {
-            window.location.href = "member.html";
+        var loginName = $("#loginName").val();
+        // 获取的表单元素的值不可能为 null
+        if (loginName === "") {
+            //alert("用户名不能为空，请输入");
+            layer.msg("用户名不能为空，请输入", {time:1000, icon:5, shift:6}, function () {
+
+            });
+            return;
         }
+
+        var password = $("#password").val();
+        if (password === "") {
+            //alert("密码不能为空，请输入");
+            layer.msg("密码不能为空，请输入", {time:1000, icon:5, shift:6}, function () {
+
+            });
+            return;
+        }
+
+        // 提交表单
+        //$("#loginForm").submit();
+        var loadingIndex = null;
+        $.ajax({
+            type:"post",
+            url:"doAjaxLogin",
+            data:{
+                "loginName":loginName,
+                "password":password
+            },
+            beforeSend:function () {
+                loadingIndex = layer.msg('处理中', {icon: 16});
+            },
+            success:function (result) {
+                layer.close(loadingIndex);
+                if (result.success) {
+                    window.location.href = "main";
+                } else {
+                    layer.msg("用户名或密码不正确！", {time:1000, icon:5, shift:6}, function () {
+
+                    });
+                }
+            }
+        });
     }
 </script>
 </body>

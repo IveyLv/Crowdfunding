@@ -3,6 +3,7 @@ package com.Ivey.crowdfunding.service;
 import com.Ivey.crowdfunding.bean.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description
@@ -12,4 +13,10 @@ import java.util.List;
  */
 public interface UserService {
     List<User> queryAll();
+
+    User queryForLogin(User user);
+
+    List<User> queryPageData(Map map);
+
+    int queryPageCount(Map<String, Object> map);
 }

@@ -11,6 +11,8 @@ public class User {
     private Integer id;
     private String username;
     private String password;
+    private String loginName;
+    private String email;
 
     public Integer getId() {
         return id;
@@ -36,12 +38,30 @@ public class User {
         this.password = password;
     }
 
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", loginName='" + loginName + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

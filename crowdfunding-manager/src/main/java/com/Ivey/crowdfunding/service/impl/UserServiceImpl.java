@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description
@@ -25,5 +26,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> queryAll() {
         return userDao.queryAll();
+    }
+
+    @Override
+    public User queryForLogin(User user) {
+        return userDao.queryForLogin(user);
+    }
+
+    @Override
+    public List<User> queryPageData(Map map) {
+        return userDao.queryPageData(map);
+    }
+
+    @Override
+    public int queryPageCount(Map<String, Object> map) {
+        return userDao.queryPageCount(map);
     }
 }
