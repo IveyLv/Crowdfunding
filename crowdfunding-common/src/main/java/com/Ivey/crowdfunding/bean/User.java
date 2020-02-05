@@ -13,6 +13,7 @@ public class User {
     private String password;
     private String loginName;
     private String email;
+    private String createTime;
 
     public Integer getId() {
         return id;
@@ -54,6 +55,14 @@ public class User {
         this.email = email;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -62,6 +71,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", loginName='" + loginName + '\'' +
                 ", email='" + email + '\'' +
+                ", createTime='" + createTime + '\'' +
                 '}';
     }
 }

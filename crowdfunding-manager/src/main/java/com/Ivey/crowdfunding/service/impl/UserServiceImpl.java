@@ -42,4 +42,9 @@ public class UserServiceImpl implements UserService {
     public int queryPageCount(Map<String, Object> map) {
         return userDao.queryPageCount(map);
     }
+
+    @Override
+    public void insertUser(User user) {
+        userDao.insertUser(user);
+    }
 }

@@ -23,4 +23,6 @@ public interface UserDao {
     List<User> queryPageData(Map map);
 
     int queryPageCount(Map<String, Object> map);
+
+    void insertUser(User user);
 }

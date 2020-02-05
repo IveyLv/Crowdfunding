@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +94,32 @@ public class UserController {
             userPage.setTotalSize(totalSize);
 
             ajaxResult.setData(userPage);
+            ajaxResult.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajaxResult.setSuccess(false);
+        }
+
+        return ajaxResult;
+    }
+
+    @RequestMapping("/add")
+    public String add() {
+        return "user/add";
+    }
+
+    @RequestMapping("/insert")
+    @ResponseBody
+    public Object insert(User user) {
+        AjaxResult ajaxResult = new AjaxResult();
+
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            user.setCreateTime(format.format(new Date()));
+            user.setPassword("123456");
+            userService.insertUser(user);
+
             ajaxResult.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();

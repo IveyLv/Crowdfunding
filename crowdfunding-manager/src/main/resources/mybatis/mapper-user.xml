@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.Ivey.crowdfunding.dao.UserDao">
 
-
     <select id="queryPageData" resultType="com.Ivey.crowdfunding.bean.User">
         select
             *
@@ -12,6 +11,7 @@
                 login_name like concat('%', #{queryText}, '%')
             </if>
         </where>
+        order by create_time desc
         limit #{pageNo}, #{pageSize}
     </select>
 
@@ -25,4 +25,12 @@
             </if>
         </where>
     </select>
+
+    <insert id="insertUser">
+        insert into tb_user(
+            username, password, login_name, email, create_time
+        ) values (
+            #{username}, #{password}, #{loginName}, #{email}, #{createTime}
+        )
+    </insert>
 </mapper>

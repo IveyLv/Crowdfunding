@@ -19,4 +19,6 @@ public interface UserService {
     List<User> queryPageData(Map map);
 
     int queryPageCount(Map<String, Object> map);
+
+    void insertUser(User user);
 }
