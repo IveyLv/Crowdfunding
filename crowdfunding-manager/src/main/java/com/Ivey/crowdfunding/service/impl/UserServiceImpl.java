@@ -47,4 +47,24 @@ public class UserServiceImpl implements UserService {
     public void insertUser(User user) {
         userDao.insertUser(user);
     }
+
+    @Override
+    public User queryById(Integer id) {
+        return userDao.queryById(id);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userDao.updateUser(user);
+    }
+
+    @Override
+    public void deleteUserById(Integer id) {
+        userDao.deleteUserById(id);
+    }
+
+    @Override
+    public void deleteUsers(Map<String, Object> map) {
+        userDao.deleteUsers(map);
+    }
 }

@@ -25,4 +25,13 @@ public interface UserDao {
     int queryPageCount(Map<String, Object> map);
 
     void insertUser(User user);
+
+    @Select("select * from tb_user where id = #{id}")
+    User queryById(Integer id);
+
+    void updateUser(User user);
+
+    void deleteUserById(Integer id);
+
+    void deleteUsers(Map<String, Object> map);
 }

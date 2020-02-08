@@ -21,4 +21,12 @@ public interface UserService {
     int queryPageCount(Map<String, Object> map);
 
     void insertUser(User user);
+
+    User queryById(Integer id);
+
+    void updateUser(User user);
+
+    void deleteUserById(Integer id);
+
+    void deleteUsers(Map<String, Object> map);
 }

@@ -128,4 +128,64 @@ public class UserController {
 
         return ajaxResult;
     }
+
+    @RequestMapping("/edit")
+    public String edit(Integer id, Model model) {
+        User user = userService.queryById(id);
+        model.addAttribute("user", user);
+
+        return "user/edit";
+    }
+
+    @RequestMapping("/update")
+    @ResponseBody
+    public Object update(User user) {
+        AjaxResult ajaxResult = new AjaxResult();
+
+        try {
+            userService.updateUser(user);
+
+            ajaxResult.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajaxResult.setSuccess(false);
+        }
+
+        return ajaxResult;
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Object delete(Integer id) {
+        AjaxResult ajaxResult = new AjaxResult();
+
+        try {
+            userService.deleteUserById(id);
+            ajaxResult.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajaxResult.setSuccess(false);
+        }
+
+        return ajaxResult;
+    }
+
+    @RequestMapping("/deletes")
+    @ResponseBody
+    public Object deletes(Integer[] userId) {
+        AjaxResult ajaxResult = new AjaxResult();
+
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("userIds", userId);
+            userService.deleteUsers(map);
+
+            ajaxResult.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajaxResult.setSuccess(false);
+        }
+
+        return ajaxResult;
+    }
 }

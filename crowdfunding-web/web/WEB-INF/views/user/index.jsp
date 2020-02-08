@@ -57,36 +57,38 @@
                         </div>
                         <button type="button" id="queryBtn" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询</button>
                     </form>
-                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
+                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;" onclick="deleteUsers()"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
                     <button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='${pageContext.request.contextPath}/user/add'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
                     <br>
                     <hr style="clear:both;">
                     <div class="table-responsive">
-                        <table class="table  table-bordered">
-                            <thead>
-                            <tr >
-                                <th width="30">#</th>
-                                <th width="30"><input type="checkbox"></th>
-                                <th>账号</th>
-                                <th>名称</th>
-                                <th>邮箱地址</th>
-                                <th width="100">操作</th>
-                            </tr>
-                            </thead>
-                            <tbody id="userData">
+                        <form id="userForm">
+                            <table class="table  table-bordered">
+                                <thead>
+                                <tr >
+                                    <th width="30">#</th>
+                                    <th width="30"><input type="checkbox" id="allSelBox"></th>
+                                    <th>账号</th>
+                                    <th>名称</th>
+                                    <th>邮箱地址</th>
+                                    <th width="100">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="userData">
 
-                            </tbody>
-                            <tfoot>
-                            <tr >
-                                <td colspan="6" align="center">
-                                    <ul id="pageContent" class="pagination">
+                                </tbody>
+                                <tfoot>
+                                <tr >
+                                    <td colspan="6" align="center">
+                                        <ul id="pageContent" class="pagination">
 
-                                    </ul>
-                                </td>
-                            </tr>
+                                        </ul>
+                                    </td>
+                                </tr>
 
-                            </tfoot>
-                        </table>
+                                </tfoot>
+                            </table>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -121,6 +123,14 @@
                 likeFlag = true;
             }
             pageQuery(1);
+        });
+
+        $("#allSelBox").click(function () {
+            var flag = this.checked;
+
+            $("#userData :checkbox").each(function () {
+                this.checked = flag;
+            })
         });
     });
     $("tbody .btn-success").click(function(){
@@ -158,14 +168,14 @@
                     $.each(users, function (i, user) {
                         tableContent += '<tr>';
                         tableContent += '    <td>' + (i + 1) + '</td>';
-                        tableContent += '    <td><input type="checkbox"></td>';
+                        tableContent += '    <td><input type="checkbox" name="userId" value="' + user.id + '"></td>';
                         tableContent += '    <td>' + user.loginName + '</td>';
                         tableContent += '    <td>' + user.username + '</td>';
                         tableContent += '    <td>' + user.email + '</td>';
                         tableContent += '    <td>';
                         tableContent += '    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
-                        tableContent += '    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        tableContent += '    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        tableContent += '    <button type="button" onclick="goUpdatePage(' + user.id + ')" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        tableContent += '    <button type="button" onclick="deleteUser(' + user.id +  ', \'' + user.loginName + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         tableContent += '    </td>';
                         tableContent += '</tr>';
                     });
@@ -189,12 +199,74 @@
                     $("#userData").html(tableContent);
                     $("#pageContent").html(pageContent);
                 } else {
-                    layer.msg("查询失败！", {time:1000, icon:5, shift:6}, function () {
+                    layer.msg("用户信息查询失败！", {time:1000, icon:5, shift:6}, function () {
 
                     });
                 }
             }
         });
+    }
+
+    function goUpdatePage(id) {
+        window.location.href = "${pageContext.request.contextPath}/user/edit?id=" + id;
+    }
+
+    function deleteUser(id, loginName) {
+        layer.confirm("删除用户信息【"+ loginName +"】, 是否继续？",  {icon: 3, title:'提示'}, function(cindex){
+
+            // 删除用户信息
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contextPath}/user/delete",
+                data: {id : id},
+                success: function (result) {
+                    if (result.success) {
+                        pageQuery(1);
+                    } else {
+                        layer.msg("用户信息删除失败！", {time:1000, icon:5, shift:6}, function () {
+
+                        });
+                    }
+                }
+            });
+
+            layer.close(cindex);
+        }, function(cindex){
+            layer.close(cindex);
+        });
+    }
+
+    function deleteUsers() {
+        var boxes = $("#userData :checked");
+
+        if (boxes.length === 0) {
+            layer.msg("请选择要删除的用户信息", {time:1000, icon:5, shift:6}, function () {
+
+            });
+        } else {
+            layer.confirm("删除选择的用户信息, 是否继续？",  {icon: 3, title:'提示'}, function(cindex){
+
+                // 删除选择的用户信息
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/user/deletes",
+                    data: $("#userForm").serialize(),
+                    success: function (result) {
+                        if (result.success) {
+                            pageQuery(1);
+                        } else {
+                            layer.msg("用户信息删除失败！", {time:1000, icon:5, shift:6}, function () {
+
+                            });
+                        }
+                    }
+                });
+
+                layer.close(cindex);
+            }, function(cindex){
+                layer.close(cindex);
+            });
+        }
     }
 </script>
 </body>

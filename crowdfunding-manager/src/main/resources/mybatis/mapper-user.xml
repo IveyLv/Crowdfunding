@@ -33,4 +33,21 @@
             #{username}, #{password}, #{loginName}, #{email}, #{createTime}
         )
     </insert>
+
+    <update id="updateUser">
+        update tb_user
+        set login_name = #{loginName}, username = #{username}, email = #{email}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserById">
+        delete from tb_user where id = #{id}
+    </delete>
+
+    <delete id="deleteUsers">
+        delete from tb_user where id in
+        <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </delete>
 </mapper>
