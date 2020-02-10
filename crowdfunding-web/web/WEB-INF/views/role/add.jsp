@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 吕航
-  Date: 2020/1/24
-  Time: 11:08
+  Date: 2020/2/8
+  Time: 18:58
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -32,7 +32,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <div><a class="navbar-brand" style="font-size:32px;" href="user.html">众筹平台 - 用户维护</a></div>
+            <div><a class="navbar-brand" style="font-size:32px;" href="user.html">众筹平台 - 角色维护</a></div>
         </div>
         <jsp:include page="../head.jsp"/>
     </div>
@@ -50,19 +50,10 @@
             <div class="panel panel-default">
                 <div class="panel-heading">表单数据<div style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-question-sign"></i></div></div>
                 <div class="panel-body">
-                    <form role="form" id="userForm">
+                    <form role="form" id="roleForm">
                         <div class="form-group">
-                            <label for="loginName">登陆账号</label>
-                            <input type="text" class="form-control" id="loginName" placeholder="请输入登陆账号">
-                        </div>
-                        <div class="form-group">
-                            <label for="username">用户名称</label>
-                            <input type="text" class="form-control" id="username" placeholder="请输入用户名称">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">邮箱地址</label>
-                            <input type="email" class="form-control" id="email" placeholder="请输入邮箱地址">
-                            <p class="help-block label label-warning">请输入合法的邮箱地址, 格式为： xxxx@xxxx.com</p>
+                            <label for="roleName">角色名称</label>
+                            <input type="text" class="form-control" id="roleName" placeholder="请输入角色名称">
                         </div>
                         <button type="button" id="insertBtn" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> 新增</button>
                         <button type="button" id="resetBtn" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
@@ -117,17 +108,9 @@
 
         // 新增用户
         $("#insertBtn").click(function () {
-            var loginName = $("#loginName").val();
-            if (loginName === "") {
-                layer.msg("登录账号不能为空，请输入...", {time:1000, icon:5, shift:6}, function () {
-
-                });
-                return;
-            }
-
-            var username = $("#username").val();
-            if (username === "") {
-                layer.msg("用户名不能为空，请输入...", {time:1000, icon:5, shift:6}, function () {
+            var roleName = $("#roleName").val();
+            if (roleName === "") {
+                layer.msg("角色名称不能为空，请输入...", {time:1000, icon:5, shift:6}, function () {
 
                 });
                 return;
@@ -136,11 +119,9 @@
             var loadingIndex = null;
             $.ajax({
                 type: "post",
-                url: "${pageContext.request.contextPath}/user/insert",
+                url: "${pageContext.request.contextPath}/role/insert",
                 data: {
-                    "loginName": loginName,
-                    "username": username,
-                    "email": $("#email").val()
+                    "roleName": roleName
                 },
                 beforeSend: function () {
                     loadingIndex = layer.msg('处理中', {icon: 16});
@@ -148,11 +129,11 @@
                 success: function (result) {
                     layer.close(loadingIndex);
                     if (result.success) {
-                        layer.msg("用户信息保存成功！", {time:1000, icon:6}, function () {
-                            window.location.href = "${pageContext.request.contextPath}/user/index"
+                        layer.msg("角色信息保存成功！", {time:1000, icon:6}, function () {
+                            window.location.href = "${pageContext.request.contextPath}/role/index"
                         });
                     } else {
-                        layer.msg("用户信息保存失败！", {time:1000, icon:5, shift:6}, function () {
+                        layer.msg("角色信息保存失败！", {time:1000, icon:5, shift:6}, function () {
 
                         });
                     }
@@ -162,10 +143,9 @@
 
         // 重置表单信息
         $("#resetBtn").click(function () {
-            $("#userForm")[0].reset();
+            $("#roleForm")[0].reset();
         });
     });
 </script>
 </body>
 </html>
-

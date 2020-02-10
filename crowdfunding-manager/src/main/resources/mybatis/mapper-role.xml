@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Ivey.crowdfunding.dao.RoleDao">
+
+    <select id="queryPageData" resultType="com.Ivey.crowdfunding.bean.Role">
+        select
+            *
+        from tb_role
+        <where>
+            <if test="queryText != null">
+                role_name like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+        limit #{pageNo}, #{pageSize}
+    </select>
+
+    <select id="queryPageCount" resultType="int">
+        select
+            count(*)
+        from tb_role
+        <where>
+            <if test="queryText != null">
+                role_name like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertRole">
+        insert into tb_role (role_name) values (#{roleName})
+    </insert>
+
+    <select id="queryById" resultType="com.Ivey.crowdfunding.bean.Role">
+        select * from tb_role where id = #{id}
+    </select>
+
+    <update id="updateRole">
+        update tb_role
+        set role_name = #{roleName}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRoleById">
+        delete from tb_role where id = #{id}
+    </delete>
+
+    <delete id="deleteRoles">
+        delete from tb_role where id in
+        <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+            #{roleId}
+        </foreach>
+    </delete>
+</mapper>
