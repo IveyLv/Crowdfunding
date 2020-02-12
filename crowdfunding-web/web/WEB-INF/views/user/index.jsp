@@ -173,7 +173,7 @@
                         tableContent += '    <td>' + user.username + '</td>';
                         tableContent += '    <td>' + user.email + '</td>';
                         tableContent += '    <td>';
-                        tableContent += '    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+                        tableContent += '    <button type="button" onclick="goAssignPage(' + user.id + ')" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
                         tableContent += '    <button type="button" onclick="goUpdatePage(' + user.id + ')" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
                         tableContent += '    <button type="button" onclick="deleteUser(' + user.id +  ', \'' + user.loginName + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         tableContent += '    </td>';
@@ -234,6 +234,10 @@
         }, function(cindex){
             layer.close(cindex);
         });
+    }
+
+    function goAssignPage(id) {
+        window.location.href = "${pageContext.request.contextPath}/user/assign?id=" + id;
     }
 
     function deleteUsers() {

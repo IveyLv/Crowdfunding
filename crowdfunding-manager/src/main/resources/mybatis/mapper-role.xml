@@ -25,12 +25,12 @@
         </where>
     </select>
 
-    <insert id="insertRole">
-        insert into tb_role (role_name) values (#{roleName})
-    </insert>
-
     <select id="queryById" resultType="com.Ivey.crowdfunding.bean.Role">
         select * from tb_role where id = #{id}
+    </select>
+
+    <select id="queryAll" resultType="com.Ivey.crowdfunding.bean.Role">
+        select * from tb_role;
     </select>
 
     <update id="updateRole">
@@ -38,6 +38,10 @@
         set role_name = #{roleName}
         where id = #{id}
     </update>
+
+    <insert id="insertRole">
+        insert into tb_role (role_name) values (#{roleName})
+    </insert>
 
     <delete id="deleteRoleById">
         delete from tb_role where id = #{id}

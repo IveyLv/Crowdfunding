@@ -2,7 +2,9 @@ package com.Ivey.crowdfunding.controller;
 
 import com.Ivey.crowdfunding.bean.AjaxResult;
 import com.Ivey.crowdfunding.bean.Page;
+import com.Ivey.crowdfunding.bean.Role;
 import com.Ivey.crowdfunding.bean.User;
+import com.Ivey.crowdfunding.service.RoleService;
 import com.Ivey.crowdfunding.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description 用户表现层
@@ -29,6 +28,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @RequestMapping("/index")
     public String index() {
@@ -179,6 +181,74 @@ public class UserController {
             Map<String, Object> map = new HashMap<>();
             map.put("userIds", userId);
             userService.deleteUsers(map);
+
+            ajaxResult.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajaxResult.setSuccess(false);
+        }
+
+        return ajaxResult;
+    }
+
+    @RequestMapping("/assign")
+    public String assign(Integer id, Model model) {
+        User user = userService.queryById(id);
+        model.addAttribute("user", user);
+
+        List<Role> roles = roleService.queryAll();
+
+        List<Role> assignedRoles = new ArrayList<>();
+        List<Role> unAssignedRoles = new ArrayList<>();
+
+        List<Integer> roleIds  = userService.queryRoleIdByUserId(id);
+
+        for (Role role : roles) {
+            if (roleIds.contains(role.getId())) {
+                assignedRoles.add(role);
+            } else {
+                unAssignedRoles.add(role);
+            }
+        }
+
+        model.addAttribute("assignedRoles", assignedRoles);
+        model.addAttribute("unAssignedRoles", unAssignedRoles);
+
+        return "user/assign";
+    }
+
+    @RequestMapping("doAssign")
+    @ResponseBody
+    public Object doAssign(Integer userId, Integer[] unAssignRoleIds) {
+        AjaxResult ajaxResult = new AjaxResult();
+
+        try {
+            // 增加关系表数据
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", userId);
+            map.put("roleIds", unAssignRoleIds);
+            userService.insertUserRoles(map);
+
+            ajaxResult.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajaxResult.setSuccess(false);
+        }
+
+        return ajaxResult;
+    }
+
+    @RequestMapping("undoAssign")
+    @ResponseBody
+    public Object undoAssign(Integer userId, Integer[] assignRoleIds) {
+        AjaxResult ajaxResult = new AjaxResult();
+
+        try {
+            // 删除关系表数据
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", userId);
+            map.put("roleIds", assignRoleIds);
+            userService.deleteUserRoles(map);
 
             ajaxResult.setSuccess(true);
         } catch (Exception e) {

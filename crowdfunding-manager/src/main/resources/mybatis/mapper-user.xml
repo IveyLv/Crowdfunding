@@ -26,6 +26,20 @@
         </where>
     </select>
 
+    <select id="queryRoleIdByUserId" resultType="int">
+        select
+            roleid
+        from tb_user_role
+        where
+            userid = #{id}
+    </select>
+
+    <update id="updateUser">
+        update tb_user
+        set login_name = #{loginName}, username = #{username}, email = #{email}
+        where id = #{id}
+    </update>
+
     <insert id="insertUser">
         insert into tb_user(
             username, password, login_name, email, create_time
@@ -34,11 +48,12 @@
         )
     </insert>
 
-    <update id="updateUser">
-        update tb_user
-        set login_name = #{loginName}, username = #{username}, email = #{email}
-        where id = #{id}
-    </update>
+    <insert id="insertUserRoles">
+        insert into tb_user_role(userid, roleid) values
+        <foreach collection="roleIds" item="roleId" separator=",">
+            (#{userId}, #{roleId})
+        </foreach>
+    </insert>
 
     <delete id="deleteUserById">
         delete from tb_user where id = #{id}
@@ -48,6 +63,13 @@
         delete from tb_user where id in
         <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
             #{userId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteUserRoles">
+        delete from tb_user_role where userid = #{userId} and roleid in
+        <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+            #{roleId}
         </foreach>
     </delete>
 </mapper>

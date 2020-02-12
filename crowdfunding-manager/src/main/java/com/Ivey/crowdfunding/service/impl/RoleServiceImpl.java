@@ -57,4 +57,9 @@ public class RoleServiceImpl implements RoleService {
     public void deleteRoles(Map<String, Object> map) {
         roleDao.deleteRoles(map);
     }
+
+    @Override
+    public List<Role> queryAll() {
+        return roleDao.queryAll();
+    }
 }

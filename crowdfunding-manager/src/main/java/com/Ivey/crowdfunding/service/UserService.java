@@ -29,4 +29,10 @@ public interface UserService {
     void deleteUserById(Integer id);
 
     void deleteUsers(Map<String, Object> map);
+
+    void insertUserRoles(Map<String, Object> map);
+
+    void deleteUserRoles(Map<String, Object> map);
+
+    List<Integer> queryRoleIdByUserId(Integer id);
 }
