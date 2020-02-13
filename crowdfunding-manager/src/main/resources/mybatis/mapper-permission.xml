@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Ivey.crowdfunding.dao.PermissionDao">
+
+    <select id="queryRootPermission" resultType="com.Ivey.crowdfunding.bean.Permission">
+        select * from tb_permission where pid is null
+    </select>
+
+    <select id="queryChildPermissions" resultType="com.Ivey.crowdfunding.bean.Permission">
+        select * from tb_permission where pid = #{id}
+    </select>
+
+    <select id="queryAll" resultType="com.Ivey.crowdfunding.bean.Permission">
+        select * from tb_permission
+    </select>
+
+    <select id="queryById" resultType="com.Ivey.crowdfunding.bean.Permission">
+        select * from tb_permission where id = #{id}
+    </select>
+
+    <update id="updatePermission">
+        update tb_permission
+        set name = #{name}, url = #{url}
+        where id = #{id}
+    </update>
+
+    <insert id="insertPermission">
+        insert into tb_permission(
+            name, pid, url
+        ) values (
+            #{name}, #{pid}, #{url}
+        )
+    </insert>
+
+    <delete id="deletePermission">
+        delete from tb_permission where id = #{id}
+    </delete>
+</mapper>
