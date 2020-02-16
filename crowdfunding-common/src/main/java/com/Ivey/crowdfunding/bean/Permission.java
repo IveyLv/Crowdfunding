@@ -17,6 +17,7 @@ public class Permission {
     private Integer pid;
     private boolean open = true;
     private boolean checked = false;
+    private String icon;
     private List<Permission> children = new ArrayList<>();
 
     public Integer getId() {
@@ -67,6 +68,14 @@ public class Permission {
         this.checked = checked;
     }
 
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
     public List<Permission> getChildren() {
         return children;
     }
@@ -84,6 +93,7 @@ public class Permission {
                 ", pid=" + pid +
                 ", open=" + open +
                 ", checked=" + checked +
+                ", icon='" + icon + '\'' +
                 ", children=" + children +
                 '}';
     }

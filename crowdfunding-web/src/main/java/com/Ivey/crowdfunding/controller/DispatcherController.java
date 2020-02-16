@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,11 @@ public class DispatcherController {
     @RequestMapping("/main")
     public String main() {
         return "main";
+    }
+
+    @RequestMapping("/error")
+    public String error() {
+        return "error";
     }
 
     /**
@@ -82,10 +88,15 @@ public class DispatcherController {
             // 获取用户权限信息
             List<Permission> permissions = permissionService.queryPermissionsByUser(dbUser);
             Permission root = null;
+            HashSet<String> uriSet = new HashSet<>();
             Map<Integer, Permission> permissionMap = new HashMap<>();
             for (Permission permission : permissions) {
                 permissionMap.put(permission.getId(), permission);
+                if (permission.getUrl() != null && !"".equals(permission.getUrl())) {
+                    uriSet.add(session.getServletContext().getContextPath() + permission.getUrl());
+                }
             }
+            session.setAttribute("authUriSet", uriSet);
 
             for (Permission permission : permissions) {
                 if (permission.getPid() == 0) {

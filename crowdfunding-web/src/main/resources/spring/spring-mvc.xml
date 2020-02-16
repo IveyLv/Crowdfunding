@@ -16,6 +16,36 @@
 
     <mvc:default-servlet-handler/>
     <mvc:annotation-driven/>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/doAjaxLogin"/>
+            <mvc:exclude-mapping path="/bootstrap/**"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/fonts/**"/>
+            <mvc:exclude-mapping path="/img/**"/>
+            <mvc:exclude-mapping path="/jquery/**"/>
+            <mvc:exclude-mapping path="/layer/**"/>
+            <mvc:exclude-mapping path="/script/**"/>
+            <mvc:exclude-mapping path="/ztree/**"/>
+            <bean class="com.Ivey.crowdfunding.web.LoginInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/doAjaxLogin"/>
+            <mvc:exclude-mapping path="/bootstrap/**"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/fonts/**"/>
+            <mvc:exclude-mapping path="/img/**"/>
+            <mvc:exclude-mapping path="/jquery/**"/>
+            <mvc:exclude-mapping path="/layer/**"/>
+            <mvc:exclude-mapping path="/script/**"/>
+            <mvc:exclude-mapping path="/ztree/**"/>
+            <bean class="com.Ivey.crowdfunding.web.AuthInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- 配置 MultipartResolver 用于文件上传 -->
     <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
