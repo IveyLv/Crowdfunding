@@ -16,6 +16,7 @@ public class Permission {
     private String url;
     private Integer pid;
     private boolean open = true;
+    private boolean checked = false;
     private List<Permission> children = new ArrayList<>();
 
     public Integer getId() {
@@ -58,6 +59,14 @@ public class Permission {
         this.open = open;
     }
 
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
     public List<Permission> getChildren() {
         return children;
     }
@@ -74,6 +83,7 @@ public class Permission {
                 ", url='" + url + '\'' +
                 ", pid=" + pid +
                 ", open=" + open +
+                ", checked=" + checked +
                 ", children=" + children +
                 '}';
     }

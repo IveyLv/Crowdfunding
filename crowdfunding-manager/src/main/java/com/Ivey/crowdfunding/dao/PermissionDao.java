@@ -1,6 +1,7 @@
 package com.Ivey.crowdfunding.dao;
 
 import com.Ivey.crowdfunding.bean.Permission;
+import com.Ivey.crowdfunding.bean.User;
 
 import java.util.List;
 
@@ -25,4 +26,8 @@ public interface PermissionDao {
     void updatePermission(Permission permission);
 
     void deletePermission(Integer id);
+
+    List<Integer> queryPermissionIdsByRoleId(Integer roleId);
+
+    List<Permission> queryPermissionByUser(User dbUser);
 }

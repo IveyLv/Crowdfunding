@@ -1,7 +1,9 @@
 package com.Ivey.crowdfunding.controller;
 
 import com.Ivey.crowdfunding.bean.AjaxResult;
+import com.Ivey.crowdfunding.bean.Permission;
 import com.Ivey.crowdfunding.bean.User;
+import com.Ivey.crowdfunding.service.PermissionService;
 import com.Ivey.crowdfunding.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description
@@ -23,6 +28,9 @@ public class DispatcherController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PermissionService permissionService;
 
     @RequestMapping("/login")
     public String login() {
@@ -70,6 +78,24 @@ public class DispatcherController {
         if (dbUser != null) {
             // 登录成功
             session.setAttribute("loginUser", dbUser);
+
+            // 获取用户权限信息
+            List<Permission> permissions = permissionService.queryPermissionsByUser(dbUser);
+            Permission root = null;
+            Map<Integer, Permission> permissionMap = new HashMap<>();
+            for (Permission permission : permissions) {
+                permissionMap.put(permission.getId(), permission);
+            }
+
+            for (Permission permission : permissions) {
+                if (permission.getPid() == 0) {
+                    root = permission;
+                } else {
+                    Permission parent = permissionMap.get(permission.getPid());
+                    parent.getChildren().add(permission);
+                }
+            }
+            session.setAttribute("rootPermission", root);
             result.setSuccess(true);
         } else {
             // 登录失败

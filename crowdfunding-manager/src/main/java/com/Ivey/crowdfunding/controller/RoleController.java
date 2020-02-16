@@ -157,4 +157,30 @@ public class RoleController {
 
         return ajaxResult;
     }
+
+    @RequestMapping("/assign")
+    public String assign() {
+        return "role/assign";
+    }
+
+    @RequestMapping("/doAssign")
+    @ResponseBody
+    public Object doAssign(Integer roleId, Integer[] permissionIds) {
+        AjaxResult ajaxResult = new AjaxResult();
+
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("roleId", roleId);
+            map.put("permissionIds", permissionIds);
+
+            roleService.insertRolePermission(map);
+
+            ajaxResult.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajaxResult.setSuccess(false);
+        }
+
+        return ajaxResult;
+    }
 }

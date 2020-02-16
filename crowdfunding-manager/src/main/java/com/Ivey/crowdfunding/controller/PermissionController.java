@@ -170,6 +170,36 @@ public class PermissionController {
         return ajaxResult;
     }
 
+    @RequestMapping("/loadAssignData")
+    @ResponseBody
+    public Object loadAssignData(Integer roleId) {
+        List<Permission> permissions = new ArrayList<>();
+
+        List<Permission> permissionList = permissionService.queryAll();
+        List<Integer> permissionIds = permissionService.queryPermissionIdsByRoleId(roleId);
+
+        Map<Integer, Permission> permissionMap = new HashMap<>();
+        for (Permission permission : permissionList) {
+            if (permissionIds.contains(permission.getId())) {
+                permission.setChecked(true);
+            } else {
+                permission.setChecked(false);
+            }
+            permissionMap.put(permission.getId(), permission);
+        }
+
+        for (Permission permission : permissionList) {
+            if (permission.getPid() == 0) {
+                permissions.add(permission);
+            } else {
+                Permission parent = permissionMap.get(permission.getPid());
+                parent.getChildren().add(permission);
+            }
+        }
+
+        return permissions;
+    }
+
     /**
      * 递归查询许可信息
      */

@@ -1,6 +1,7 @@
 package com.Ivey.crowdfunding.service.impl;
 
 import com.Ivey.crowdfunding.bean.Permission;
+import com.Ivey.crowdfunding.bean.User;
 import com.Ivey.crowdfunding.dao.PermissionDao;
 import com.Ivey.crowdfunding.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,15 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public void deletePermission(Integer id) {
         permissionDao.deletePermission(id);
+    }
+
+    @Override
+    public List<Integer> queryPermissionIdsByRoleId(Integer roleId) {
+        return permissionDao.queryPermissionIdsByRoleId(roleId);
+    }
+
+    @Override
+    public List<Permission> queryPermissionsByUser(User dbUser) {
+        return permissionDao.queryPermissionByUser(dbUser);
     }
 }

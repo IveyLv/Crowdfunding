@@ -18,6 +18,27 @@
         select * from tb_permission where id = #{id}
     </select>
 
+    <select id="queryPermissionIdsByRoleId" resultType="int">
+        select permissionid from tb_role_permission where roleid = #{roleId}
+    </select>
+
+    <select id="queryPermissionByUser" resultType="com.Ivey.crowdfunding.bean.Permission">
+        select
+            *
+        from tb_permission
+        where id in (
+            select
+                permissionid
+            from tb_role_permission
+            where roleid in (
+                select
+                    roleid
+                from tb_user_role
+                where userid = #{id}
+            )
+        )
+    </select>
+
     <update id="updatePermission">
         update tb_permission
         set name = #{name}, url = #{url}

@@ -169,7 +169,7 @@
                         tableContent += '    <td><input type="checkbox" name="roleId" value="' + role.id + '"></td>';
                         tableContent += '    <td>' + role.roleName + '</td>';
                         tableContent += '    <td>';
-                        tableContent += '    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+                        tableContent += '    <button type="button" onclick="goAssignPage(' + role.id + ')" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
                         tableContent += '    <button type="button" onclick="goUpdatePage(' + role.id + ')" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
                         tableContent += '    <button type="button" onclick="deleteUser(' + role.id +  ', \'' + role.roleName + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         tableContent += '    </td>';
@@ -263,6 +263,10 @@
                 layer.close(cindex);
             });
         }
+    }
+
+    function goAssignPage(id) {
+        window.location.href = "${pageContext.request.contextPath}/role/assign?id=" + id;
     }
 </script>
 </body>
