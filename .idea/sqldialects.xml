@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/crowdfunding-manager/src/main/resources/mybatis/mapper-permission.xml" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/crowdfunding-manager/src/main/resources/mybatis/mapper-role.xml" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/crowdfunding-manager/src/main/resources/mybatis/mapper-user.xml" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/crowdfunding-web/web/db_crowdfunding.sql" dialect="MySQL" />
   </component>
 </project>
